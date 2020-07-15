@@ -46,6 +46,7 @@ export default function App() {
       setFiltered(chores.filter( chore => chore.toLowerCase().includes(query)));
     }
   }
+
   return (
     <div className="content">
       <div className="container">
