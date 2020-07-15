@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { bulma } from 'bulma';
 
 export default function App() {
@@ -7,16 +7,22 @@ export default function App() {
   const [ chores, setChores ] = useState([
       "Go to the store",
       "Wash the dishes",
-      "Learn some code"
+      "Learn some code",
+      "Pick up laundry"
   ]);
+  const [ filtered, setFiltered ] = useState([]);
+
+  useEffect( () => {
+    setFiltered(chores);
+  }, [chores]);
+
   const addItem = (evt) => {
     evt.preventDefault();
 
     const newItem = refChore.current.value;
     const form = document.getElementById('addItemForm');
     if (newItem) {
-      setChores(chores => chores.concat(newItem));
-      // console.log(`chores::${JSON.stringify(chores)}`);
+      setChores([...chores, newItem]);
       refChore.current.value = "";
       refChore.current.classList.remove("is-danger");
       form.reset();
@@ -24,11 +30,21 @@ export default function App() {
       refChore.current.classList.add("is-danger");
     }
   };
-  const remItem = indx => {
-    setChores(chores.filter((chore, cidx) => indx !== cidx));
+
+  const remItem = item => {
+    setChores(chores.filter( chore => chore !== item));
+    refSearch.current.value = "";
   };
+
   const handleSearch = (evt) => {
     evt.preventDefault();
+
+    const query = refSearch.current.value.toLowerCase();
+    if (!query) {
+      setFiltered(chores);
+    } else {
+      setFiltered(chores.filter( chore => chore.toLowerCase().includes(query)));
+    }
   }
   return (
     <div className="content">
@@ -40,14 +56,14 @@ export default function App() {
                  type="input"
                  ref={ refSearch }
                  placeholder="Search ..."
-                 onClick={ handleSearch }
+                 onChange={ handleSearch }
           />
           <ul>
-            { chores.map( (item, indx) => (
+            { filtered.map( (item, indx) => (
               <li key={ indx }>
-                { item } &nbsp;&nbsp;
+                { item }&nbsp;&nbsp;
                 <span className="delete"
-                      onClick={() => remItem(indx)}
+                      onClick={() => remItem(item)}
                 />
               </li>
             ))}
