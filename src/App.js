@@ -2,37 +2,39 @@ import React, { useEffect, useState, useRef } from 'react';
 import { bulma } from 'bulma';
 
 export default function App() {
-  const refChore = useRef();
+  const refEmployee = useRef();
   const refSearch = useRef();
-  const [ chores, setChores ] = useState([
-      "Go to the store",
-      "Wash the dishes",
-      "Learn some code",
-      "Pick up laundry"
+  const [ employees, setEmployees ] = useState([
+      "Parker Green",
+      "Charlie Green",
+      "Alex Stevens",
+      "Avery Scott",
+      "Riley Miller",
+      "Jordan Richards"
   ]);
   const [ filtered, setFiltered ] = useState([]);
 
   useEffect( () => {
-    setFiltered(chores);
-  }, [chores]);
+    setFiltered(employees);
+  }, [employees]);
 
   const addItem = (evt) => {
     evt.preventDefault();
 
-    const newItem = refChore.current.value;
+    const newIndvidual = refEmployee.current.value;
     const form = document.getElementById('addItemForm');
-    if (newItem) {
-      setChores([...chores, newItem]);
-      refChore.current.value = "";
-      refChore.current.classList.remove("is-danger");
+    if (newIndvidual) {
+      setEmployees([...employees, newIndvidual]);
+      refEmployee.current.value = "";
+      refEmployee.current.classList.remove("is-danger");
       form.reset();
     } else {
-      refChore.current.classList.add("is-danger");
+      refEmployee.current.classList.add("is-danger");
     }
   };
 
   const remItem = item => {
-    setChores(chores.filter( chore => chore !== item));
+    setEmployees(employees.filter( employee => employee !== item));
     refSearch.current.value = "";
   };
 
@@ -41,9 +43,11 @@ export default function App() {
 
     const query = refSearch.current.value.toLowerCase();
     if (!query) {
-      setFiltered(chores);
+      setFiltered(employees);
     } else {
-      setFiltered(chores.filter( chore => chore.toLowerCase().includes(query)));
+      setFiltered(employees.filter(
+        employee => employee.toLowerCase().includes(query)
+    ));
     }
   }
 
@@ -79,8 +83,8 @@ export default function App() {
                    id="addInput"
                    data-testid="addInput"
                    type="input"
-                   ref={ refChore }
-                   placeholder="-- add a chore --"
+                   ref={ refEmployee }
+                   placeholder="-- add an employee --"
             />
             <br /><br />
             <button className="button is-info"
