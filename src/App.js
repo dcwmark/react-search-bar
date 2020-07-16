@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { bulma } from 'bulma';
 
 export default function App() {
+  const refForm = useRef();
   const refEmployee = useRef();
   const refSearch = useRef();
   const [ employees, setEmployees ] = useState([
@@ -22,7 +23,8 @@ export default function App() {
     evt.preventDefault();
 
     const newIndvidual = refEmployee.current.value;
-    const form = document.getElementById('addItemForm');
+    const form = refForm.current;
+    // const form = document.getElementById('addItemForm');
     if (newIndvidual) {
       setEmployees([...employees, newIndvidual]);
       refEmployee.current.value = "";
@@ -78,7 +80,8 @@ export default function App() {
         <section className="section">
           <form className="form"
                 id="addItemForm"
-                data-testid="addItemForm">
+                data-testid="addItemForm"
+                ref={ refForm }>
             <input className="input"
                    id="addInput"
                    data-testid="addInput"
